@@ -1,6 +1,12 @@
 package edu.madisoncollege.entjava;
 
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.apache.log4j.*;
+
 /**
  * Created by paulawaite on 9/7/16.
  *
@@ -37,5 +43,77 @@ package edu.madisoncollege.entjava;
 
 public class SantaInAnElevator {
 
+    private int currentFloor = 0;
+    private final Logger logger = Logger.getLogger(this.getClass());
 
+    /**
+     * Method to read each line from the input file and start processing each
+     * individual token
+     */
+
+    public void readFile() {
+
+        BufferedReader input = null;
+        try {
+            String filePath = "/home/student/Documents/EnterpriseRepos/santa-in-an-elevator-week-2-exercise-1-SSAJJALA/src/main/resources/SantaUpDown.txt";
+            input = new BufferedReader(new FileReader(filePath));
+
+            int c = 0;
+            while((c = input.read()) != -1) {
+                char character = (char) c;
+                logger.info("character:" + character);
+                if (character == '(') {
+                    this.handleGoingUp();
+                } else if (character == ')') {
+                    this.handleGoingDown();
+                } else {
+                    logger.info("character:" + character + "no direction for this character and skipping");
+                }
+            }
+
+            this.printFinalFloor();
+
+
+
+        } catch (FileNotFoundException fnfe) {
+            //System.out.println("Could not find the file");
+            logger.info("Could not find the file");
+            fnfe.printStackTrace();
+        } catch (IOException io) {
+            //System.out.println("Could not write the file");
+            logger.info("Could not write the file");
+            io.printStackTrace();
+        } catch (Exception ex) {
+            //System.out.println("Something bad happened");
+            logger.info("Something bad happened");
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException io2){
+                    //System.out.println("Could not close the file");
+                    logger.info("Something bad happened");
+                    io2.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
+    public void handleGoingUp() {
+
+        currentFloor++;
+    }
+
+    public void handleGoingDown() {
+        currentFloor--;
+
+    }
+
+    public void printFinalFloor() {
+
+        logger.info("At the end, Santa is at" + currentFloor + "finally");
+    }
 }
