@@ -46,29 +46,31 @@ public class SantaInAnElevator {
     private int currentFloor = 0;
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public void setCurrentFloor(int currentFloor) {
+        this.currentFloor = currentFloor;
+    }
+
     /**
-     * Method to read each line from the input file and start processing each
+     * Method to read each char from the input file and start processing each
      * individual token
      */
 
-    public void readFile() {
+    public void readFile(String filePath) {
 
         BufferedReader input = null;
         try {
-            String filePath = "/home/student/Documents/EnterpriseRepos/santa-in-an-elevator-week-2-exercise-1-SSAJJALA/src/main/resources/SantaUpDown.txt";
+            //String filePath = "/home/student/Documents/EnterpriseRepos/santa-in-an-elevator-week-2-exercise-1-SSAJJALA/src/main/resources/SantaUpDown.txt";
             input = new BufferedReader(new FileReader(filePath));
 
             int c = 0;
             while((c = input.read()) != -1) {
                 char character = (char) c;
                 logger.info("character:" + character);
-                if (character == '(') {
-                    this.handleGoingUp();
-                } else if (character == ')') {
-                    this.handleGoingDown();
-                } else {
-                    logger.info("character:" + character + "no direction for this character and skipping");
-                }
+                this.handleDirection(character);
             }
 
             this.printFinalFloor();
@@ -99,6 +101,16 @@ public class SantaInAnElevator {
             }
         }
 
+    }
+
+    public void handleDirection(char dir) {
+        if (dir == '(') {
+            this.handleGoingUp();
+        } else if (dir == ')') {
+            this.handleGoingDown();
+        } else {
+            logger.info("character:" + dir + "no direction for this character and skipping");
+        }
     }
 
 
