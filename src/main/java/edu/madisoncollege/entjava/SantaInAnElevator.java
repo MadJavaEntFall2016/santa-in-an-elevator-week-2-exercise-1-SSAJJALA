@@ -46,12 +46,12 @@ public class SantaInAnElevator {
     private int currentFloor = 0;
     private final Logger logger = Logger.getLogger(this.getClass());
 
+    /** getter method
+     *
+     * @return int currentFloor
+     */
     public int getCurrentFloor() {
         return currentFloor;
-    }
-
-    public void setCurrentFloor(int currentFloor) {
-        this.currentFloor = currentFloor;
     }
 
     /**
@@ -59,11 +59,11 @@ public class SantaInAnElevator {
      * individual token
      */
 
-    public void readFile(String filePath) {
+    public void readFile(String filePath) throws Exception {
 
         BufferedReader input = null;
         try {
-            //String filePath = "/home/student/Documents/EnterpriseRepos/santa-in-an-elevator-week-2-exercise-1-SSAJJALA/src/main/resources/SantaUpDown.txt";
+            logger.info("Initially Santa is at " + this.currentFloor + " floor");
             input = new BufferedReader(new FileReader(filePath));
 
             int c = 0;
@@ -73,28 +73,33 @@ public class SantaInAnElevator {
                 this.handleDirection(character);
             }
 
-            this.printFinalFloor();
+            logger.info("At the end, Santa is at " + this.getFinalFloor() + " floor finally");
+
 
 
 
         } catch (FileNotFoundException fnfe) {
-            //System.out.println("Could not find the file");
+
             logger.info("Could not find the file");
-            fnfe.printStackTrace();
+            throw fnfe;
+
+
         } catch (IOException io) {
-            //System.out.println("Could not write the file");
+
             logger.info("Could not write the file");
-            io.printStackTrace();
+
+            throw io;
         } catch (Exception ex) {
-            //System.out.println("Something bad happened");
+
             logger.info("Something bad happened");
-            ex.printStackTrace();
+
+            throw ex;
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException io2){
-                    //System.out.println("Could not close the file");
+
                     logger.info("Something bad happened");
                     io2.printStackTrace();
                 }
@@ -116,16 +121,17 @@ public class SantaInAnElevator {
 
     public void handleGoingUp() {
 
-        currentFloor++;
+        this.currentFloor = this.currentFloor + 1;
+        logger.info("Santa is now at " + this.currentFloor + " floor");
     }
 
     public void handleGoingDown() {
-        currentFloor--;
-
+        this.currentFloor = this.currentFloor - 1;
+        logger.info("Santa is now at " + this.currentFloor + " floor");
     }
 
-    public void printFinalFloor() {
+    public int getFinalFloor() {
 
-        logger.info("At the end, Santa is at" + currentFloor + "finally");
+        return this.currentFloor;
     }
 }
