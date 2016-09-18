@@ -1,10 +1,8 @@
 package edu.madisoncollege.entjava;
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+
 import org.apache.log4j.*;
 
 /**
@@ -61,7 +59,39 @@ public class SantaInAnElevator {
 
     public void readFile(String filePath) throws Exception {
 
+        logger.info("Initially Santa is at " + this.currentFloor + " floor");
+        try (FileInputStream input = new FileInputStream(filePath);
+             BufferedInputStream input1 = new BufferedInputStream(input)
+        ) {
+            int c = 0;
+            while ((c = input1.read()) != -1) {
+                char character = (char) c;
+                logger.info("character:" + character);
+                this.handleDirection(character);
+
+            }
+            logger.info("At the end, Santa is at " + this.getFinalFloor() + " floor finally");
+        } catch (FileNotFoundException fnfe) {
+
+            logger.info("Could not find the file");
+            throw fnfe;
+
+
+        } catch (IOException io) {
+
+            logger.info("Could not read the file");
+
+            throw io;
+        } catch (Exception ex) {
+
+            logger.info("Something bad happened");
+
+            throw ex;
+        }
+    }
+        /**
         BufferedReader input = null;
+
         try {
             logger.info("Initially Santa is at " + this.currentFloor + " floor");
             input = new BufferedReader(new FileReader(filePath));
@@ -106,7 +136,7 @@ public class SantaInAnElevator {
             }
         }
 
-    }
+    } */
 
     public void handleDirection(char dir) {
         if (dir == '(') {
